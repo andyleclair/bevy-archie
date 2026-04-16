@@ -285,7 +285,12 @@ impl ControllerIconAssets {
             return handle.clone();
         }
 
-        let path = format!("{}/{}", self.base_path, icon.filename(layout, size));
+        let path: String = std::path::Path::new(&self.base_path)
+            .join(icon.filename(layout, size))
+            .as_path()
+            .to_string_lossy()
+            .into_owned();
+
         let handle = asset_server.load(&path);
         self.icons.insert(key, handle.clone());
         handle
